@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>글램독 공식 예약 (데모)</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --bg:#F6F5F1;--surface:#FFFFFF;--surface-2:#FAF9F6;--surface-3:#EEECE6;--line:#E4E1D9;--line-2:#EFEDE7;
+  --ink:#17201B;--ink-2:#545E57;--ink-3:#646B66;--ink-4:#A9AEA9;
+  --brand:#1F5A36;--brand-press:#184A2C;--brand-soft:#E4EFE7;--brand-ink:#1F5A36;--on-brand:#FFFFFF;
+  --ok:#2E8549;--ok-soft:#E3F1E7;--ok-ink:#22673A;
+  --warn:#A8650B;--warn-soft:#FCF1DE;--warn-ink:#8F4E07;--warn-line:#EBC17E;
+  --bad:#C2402F;--bad-soft:#FBE9E6;--bad-ink:#A3301F;
+  --info:#2A5DB0;--info-soft:#E7EEF9;--info-ink:#244F96;
+  --r-lg:18px;--sh-1:0 1px 2px rgb(23 32 27/.05);--sh-3:0 16px 40px rgb(23 32 27/.18);
+  --ease:cubic-bezier(.2,.8,.2,1);--out:#E7E4DC;--px:16px;
+}
+@media (max-width:380px){:root{--px:12px}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--out);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{background:none;border:0;cursor:pointer;text-align:inherit;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.n{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--bg);box-shadow:0 0 0 1px var(--line),0 12px 48px rgb(23 32 27/.10)}
+@media (max-width:480px){body{background:var(--bg)}.app{box-shadow:none}}
+.demo{display:flex;align-items:center;justify-content:center;gap:6px;min-height:28px;padding:4px var(--px);background:var(--info-soft);color:var(--info-ink);font-size:12px;font-weight:700;text-align:center}
+.demo svg{width:14px;height:14px}
+
+/* 머리 */
+.hd{position:sticky;top:0;z-index:30;background:rgb(246 245 241/.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:2px;height:56px;padding:0 8px}
+.ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--ink);flex-shrink:0}
+.ib:hover{background:var(--surface-3)}
+.ib svg{width:22px;height:22px}
+.logo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;letter-spacing:-.03em;white-space:nowrap;padding-left:calc(var(--px) - 8px);min-width:0}
+#back:not([hidden]) + .logo{padding-left:2px}
+.logo .m{width:30px;height:30px;border-radius:9px;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;flex-shrink:0}
+.logo .m svg{width:17px;height:17px}
+.logo .t{font-size:12px;font-weight:750;color:var(--brand-ink);background:var(--brand-soft);border-radius:7px;padding:2px 7px;letter-spacing:0}
+.sp{flex:1}
+.lnk{min-height:44px;padding:0 10px;border-radius:12px;font-size:13.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.lnk:hover{background:var(--surface-3)}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:0 var(--px) 2px}
+.st{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:44px;min-width:0;cursor:default}
+.st[onclick]{cursor:pointer}
+.st i{display:block;height:4px;border-radius:2px;background:var(--surface-3)}
+.st span{font-size:12px;font-weight:700;color:var(--ink-3);white-space:nowrap}
+.st.on i,.st.done i{background:var(--brand)}
+.st.on span{color:var(--ink);font-weight:800}
+.st.done span{color:var(--brand-ink)}
+
+/* 본문 */
+main{padding:0 var(--px) 120px}
+.strip{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--brand-soft);color:var(--brand-ink);font-size:13.5px;font-weight:750}
+.strip svg{width:17px;height:17px}
+.h1{font-size:21px;font-weight:800;letter-spacing:-.03em;margin:20px 0 2px;line-height:1.35}
+.sub{font-size:14px;color:var(--ink-2);margin-bottom:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:16px}
+.card + .card{margin-top:10px}
+.ct{font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.ct svg{width:17px;height:17px;color:var(--ink-3)}
+.ct small{margin-left:auto;font-size:12.5px;font-weight:650;color:var(--ink-3)}
+.p2{font-size:13.5px;color:var(--ink-2);margin:-4px 0 10px}
+.inp{display:block;width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);padding:0 13px;font-size:16px}
+.inp:focus{outline:none;border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 3px rgb(31 90 54/.15)}
+select.inp{appearance:none;-webkit-appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23545E57' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:18px}
+textarea.inp{padding:12px 13px;min-height:84px;resize:vertical;line-height:1.5}
+.fl{display:block;font-size:12.5px;font-weight:700;color:var(--ink-3);margin-bottom:5px}
+.fl + .inp + .fl,.inp + .fl{margin-top:12px}
+.btn{min-height:48px;padding:0 16px;border-radius:13px;font-weight:750;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--surface);border:1px solid var(--line);white-space:nowrap}
+.btn:hover{border-color:var(--ink-4)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.btn.pri:hover{background:var(--brand-press)}
+.btn.big{min-height:52px;font-size:16px;border-radius:14px}
+.btn.full{width:100%}
+.btn.dash{border-style:dashed;color:var(--ink-2);margin-top:10px}
+.btn svg{width:17px;height:17px}
+.bd{font-size:12px;font-weight:750;border-radius:7px;padding:2px 7px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;letter-spacing:0}
+.bd.vip{background:var(--brand);color:#fff}
+.note{display:flex;gap:7px;font-size:12.5px;color:var(--ink-3);margin-top:12px;align-items:flex-start}
+.note svg{width:15px;height:15px;margin-top:2px}
+
+/* 단골 */
+.vipc{margin-top:12px;background:var(--brand);color:#fff;border-radius:var(--r-lg);padding:16px}
+.vipc .vt{display:flex;gap:8px;align-items:flex-start;font-size:17px;font-weight:800;line-height:1.4}
+.vipc .vt svg{width:20px;height:20px;margin-top:2px}
+.vipc p{font-size:14px;margin-top:4px;color:#fff}
+.vipc .vc{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.vipc .vc span{font-size:12px;font-weight:750;background:rgb(255 255 255/.16);border-radius:7px;padding:3px 8px}
+.vipc .vf{display:flex;gap:7px;align-items:flex-start;margin-top:12px;padding-top:10px;border-top:1px solid rgb(255 255 255/.22);font-size:13px}
+.vipc .vf svg{width:16px;height:16px;margin-top:2px}
+.load{margin-top:12px}
+.load .row{display:flex;gap:8px}
+.load .row .inp{flex:1;min-width:0}
+
+/* 지점 */
+.brs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.br{position:relative;min-height:76px;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:2px;text-align:left;box-shadow:var(--sh-1)}
+.br .bn{font-size:17px;font-weight:800}
+.br .ba{font-size:12.5px;color:var(--ink-3)}
+.br[aria-pressed="true"]{border:2px solid var(--brand);padding:11px 13px;background:var(--brand-soft)}
+.br .ck{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;display:none;place-items:center}
+.br .ck svg{width:13px;height:13px;stroke-width:3}
+.br[aria-pressed="true"] .ck{display:grid}
+
+/* 달력 */
+.live{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:750;color:var(--ok-ink);margin:-4px 0 10px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 1.8s infinite}
+.live span{color:var(--ink-3);font-weight:600}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgb(46 133 73/.45)}70%{box-shadow:0 0 0 8px rgb(46 133 73/0)}100%{box-shadow:0 0 0 0 rgb(46 133 73/0)}}
+.cal{padding:12px 4px 8px}
+.mh{text-align:center;font-size:16px;font-weight:800;margin-bottom:6px}
+.wk,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.wk span{text-align:center;font-size:12px;font-weight:700;color:var(--ink-3);padding:4px 0}
+.wk span:first-child{color:var(--bad-ink)}
+.wk span:last-child{color:var(--info-ink)}
+.day{min-height:62px;min-width:0;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 0}
+.day:hover{background:var(--surface-2)}
+.day b{font-size:14px;font-weight:750;line-height:1.25}
+.day .p{font-size:12px;font-weight:700;color:var(--ink-2);line-height:1.3;white-space:nowrap}
+.day .l{font-size:12px;font-weight:650;color:var(--ink-3);line-height:1.3;white-space:nowrap}
+.day .l.low{color:var(--warn-ink);font-weight:750}
+.day.sun b{color:var(--bad-ink)}
+.day.sat b{color:var(--info-ink)}
+.day.so b{color:var(--ink-3)}
+.day.so .l{color:var(--bad-ink);font-weight:750}
+.day.mid,.day.mid:hover{background:var(--brand-soft)}
+.day.sel,.day.sel:hover{background:var(--brand)}
+.day.sel b,.day.sel .p{color:#fff}
+.selbox{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 64px;gap:8px;margin-top:10px}
+.selbox > div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 12px}
+.selbox small{display:block;font-size:12px;font-weight:700;color:var(--ink-3)}
+.selbox b{font-size:15.5px;font-weight:800}
+.selbox .nt{display:grid;place-items:center;background:var(--brand-soft);border-color:transparent;color:var(--brand-ink);font-weight:800;font-size:15px;padding:0}
+
+/* 객실 */
+.rm{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:18px;background:var(--surface);padding:14px 16px;box-shadow:var(--sh-1)}
+.rm + .rm{margin-top:10px}
+.rm[aria-pressed="true"]{border:2px solid var(--brand);padding:13px 15px}
+.rm:disabled{background:var(--surface-2);box-shadow:none;cursor:default}
+.rm .top{display:flex;align-items:flex-start;gap:12px}
+.rm .ic{width:44px;height:44px;border-radius:13px;background:var(--surface-3);display:grid;place-items:center;color:var(--ink-2);flex-shrink:0}
+.rm[aria-pressed="true"] .ic{background:var(--brand-soft);color:var(--brand-ink)}
+.rm .tx{flex:1;min-width:0}
+.rm .rn{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:17px;font-weight:800}
+.rm .rd{display:block;font-size:13px;color:var(--ink-2)}
+.rm .rb{width:24px;height:24px;border-radius:50%;border:2px solid #B9BDB6;flex-shrink:0;display:grid;place-items:center;color:#fff;margin-top:2px}
+.rm .rb svg{width:14px;height:14px;stroke-width:3;opacity:0}
+.rm[aria-pressed="true"] .rb{background:var(--brand);border-color:var(--brand)}
+.rm[aria-pressed="true"] .rb svg{opacity:1}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.fact{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--surface-3);border-radius:7px;padding:3px 8px;display:inline-flex;align-items:center;gap:4px}
+.fact svg{width:13px;height:13px}
+.rm .pr{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-2)}
+.rm .ota{display:block;font-size:12.5px;color:var(--ink-3)}
+.rm .rl{display:block;font-size:12.5px;font-weight:750;color:var(--warn-ink);margin-top:2px}
+.rm .our{display:block;text-align:right}
+.rm .our small{display:block;font-size:12px;font-weight:750;color:var(--bad-ink)}
+.rm .our b{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.rm .so{font-size:13.5px;font-weight:750;color:var(--bad-ink)}
+
+/* 손님 */
+.row2{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lb{display:block;min-width:0}
+.lb .lt{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:800}
+.lb .lt svg{width:17px;height:17px;color:var(--ink-3)}
+.lb .ls{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.stp{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.stp button{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+.stp button:disabled{color:var(--ink-4);background:var(--surface-2);cursor:default}
+.stp b{min-width:30px;text-align:center;font-size:21px;font-weight:800}
+.addn{margin-top:10px;font-size:13px;font-weight:700;color:var(--warn-ink);background:var(--warn-soft);border-radius:10px;padding:8px 10px}
+.dog{border:1px solid var(--line-2);border-radius:14px;padding:6px 12px 12px;background:var(--surface-2)}
+.dog + .dog{margin-top:10px}
+.dh2{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.dh2 b{font-size:14px;font-weight:800}
+.rmv{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--ink-3);margin-right:-8px}
+.rmv:hover{background:var(--surface-3)}
+.r2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:10px}
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.seg button{min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:700;padding:0 2px;white-space:nowrap}
+.seg button[aria-pressed="true"]{border:2px solid var(--brand);background:var(--brand-soft);color:var(--brand-ink)}
+.seg button.x[aria-pressed="true"]{border-color:var(--bad);background:var(--bad-soft);color:var(--bad-ink)}
+.err{display:flex;gap:6px;align-items:flex-start;margin-top:8px;font-size:13px;font-weight:700;color:var(--bad-ink)}
+.err svg{width:16px;height:16px;margin-top:1px}
+.tgl{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;text-align:left}
+.sw{width:52px;height:30px;border-radius:15px;background:#C9C6BE;position:relative;flex-shrink:0;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:var(--sh-1);transition:left .2s var(--ease)}
+.tgl[aria-checked="true"] .sw{background:var(--brand)}
+.tgl[aria-checked="true"] .sw::after{left:25px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{min-height:44px;min-width:80px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:750}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* 결제 */
+.bk{padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid var(--line-2)}
+.bk b{display:block;font-size:17px;font-weight:800}
+.bk span{display:block;font-size:13.5px;color:var(--ink-2)}
+.ln{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:14.5px}
+.ln span{color:var(--ink-2)}
+.ln b{font-weight:750;white-space:nowrap}
+.ln.cp span,.ln.cp b{color:var(--bad-ink)}
+.tot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);margin-top:6px;padding-top:12px;font-weight:800}
+.tot b{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.save{margin-top:12px;background:var(--ok-soft);color:var(--ok-ink);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:750;display:flex;gap:7px;align-items:center}
+.save svg{width:16px;height:16px}
+.pays{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pm{position:relative;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 12px;border:1px solid var(--line);border-radius:14px;background:var(--surface);font-weight:750;font-size:14.5px;cursor:pointer;white-space:nowrap;min-width:0}
+.pm input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.pm.on{border:2px solid var(--brand);padding:0 11px;background:var(--brand-soft)}
+.pm:focus-within{outline:2px solid var(--brand);outline-offset:2px}
+.pl{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:900;flex-shrink:0}
+.pl svg{width:17px;height:17px}
+.pl.cc{background:var(--surface-3);color:var(--ink-2)}
+.pl.kakao{background:#FEE500;color:#191919}
+.pl.naver{background:#03C75A;color:#fff}
+.pl.toss{background:#0064FF;color:#fff}
+.agr .all{display:flex;align-items:center;gap:10px;min-height:52px;font-weight:800;font-size:15.5px;border-bottom:1px solid var(--line-2);margin:-6px 0 4px;cursor:pointer}
+.ag{display:flex;align-items:center;gap:2px}
+.ag label{flex:1;display:flex;align-items:center;gap:10px;min-height:48px;font-size:14px;font-weight:600;cursor:pointer;min-width:0}
+.ag label em{font-style:normal;font-weight:800;color:var(--brand-ink);flex-shrink:0}
+.ag label em.o{color:var(--ink-3)}
+.more{min-width:44px;min-height:44px;padding:0 6px;font-size:12.5px;font-weight:700;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;flex-shrink:0}
+.terms{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-radius:10px;padding:10px 12px;margin:0 0 6px 34px;line-height:1.6}
+.cb{appearance:none;-webkit-appearance:none;width:24px;height:24px;border-radius:7px;border:2px solid #B9BDB6;background:var(--surface);flex-shrink:0;margin:0;cursor:pointer}
+.cb:checked{background:var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/16px no-repeat;border-color:var(--brand)}
+.agr.bad{border-color:var(--bad);box-shadow:0 0 0 3px rgb(194 64 47/.12)}
+
+/* 완료 */
+.done-h{text-align:center;padding:28px 0 16px}
+.okc{width:68px;height:68px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:0 auto 14px}
+.okc svg{width:36px;height:36px;stroke-width:2.6}
+.done-h h1{font-size:23px;font-weight:800;letter-spacing:-.03em}
+.done-h p{font-size:14px;color:var(--ink-2);margin-top:4px}
+.bno{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:13.5px;font-weight:700;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:7px 12px}
+.bno b{font-size:15px;color:var(--ink);font-weight:800;letter-spacing:.01em}
+.kv{display:grid;grid-template-columns:84px minmax(0,1fr);gap:8px 12px;font-size:14px}
+.kv dt{color:var(--ink-3);font-weight:650}
+.kv dd{font-weight:700}
+.okbox{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:13px 14px;border-radius:16px;background:var(--ok-soft);color:var(--ok-ink)}
+.okbox svg{width:20px;height:20px;margin-top:1px}
+.okbox b{display:block;font-size:14.5px;font-weight:800}
+.okbox span{display:block;font-size:13px;margin-top:1px}
+.ops{margin-top:12px;background:var(--surface);border:2px solid var(--brand);border-radius:18px;padding:16px}
+.ops h2{font-size:15.5px;font-weight:800;color:var(--brand-ink);display:flex;align-items:center;gap:7px}
+.ops h2 svg{width:18px;height:18px}
+.ops .ps{font-size:12.5px;color:var(--ink-3);margin:2px 0 6px}
+.ops ul{list-style:none}
+.ops li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:11px;align-items:start;padding:10px 0;border-top:1px solid var(--line-2)}
+.ops li:first-child{border-top:0}
+.oi{width:36px;height:36px;border-radius:11px;background:var(--brand-soft);color:var(--brand-ink);display:grid;place-items:center}
+.oi svg{width:18px;height:18px}
+.ops .ot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14.5px;font-weight:800}
+.ops small{display:block;font-size:12.5px;color:var(--ink-2);margin-top:1px}
+.ga{font-size:12px;font-weight:750;color:var(--ink-3);background:var(--surface-3);border-radius:6px;padding:1px 6px;letter-spacing:0}
+.fee{display:grid;gap:8px;margin:8px 0 4px}
+.fr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;font-size:12.5px;align-items:center}
+.fr span{color:var(--ink-2)}
+.fr b{display:block;font-size:13.5px;font-weight:800;white-space:nowrap}
+.fb{grid-column:1/-1;height:10px;border-radius:5px;background:var(--surface-3);overflow:hidden}
+.fb i{display:block;height:100%;border-radius:5px}
+.acts{display:grid;gap:8px;margin-top:16px}
+
+/* 아래 막대·알림·결제창 */
+.bar{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:480px;z-index:40;background:rgb(255 255 255/.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px var(--px) calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px}
+.bar .lf{flex:1;min-width:0}
+.bar .lf small{display:block;font-size:12.5px;font-weight:650;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .lf b{display:block;font-size:18px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .btn{min-width:124px}
+.bar.full .lf{display:none}
+.bar.full .btn{flex:1}
+.toast{position:fixed;left:0;right:0;bottom:96px;margin:0 auto;width:max-content;max-width:min(440px,calc(100% - 32px));background:var(--ink);color:#fff;border-radius:14px;padding:12px 16px;font-size:14px;font-weight:650;z-index:70;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .22s,transform .22s var(--ease);text-align:center}
+.toast.on{opacity:1;transform:none}
+.scrim{position:fixed;inset:0;background:rgb(16 20 18/.45);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:480px;z-index:61;background:var(--surface);border-radius:24px 24px 0 0;padding:10px 20px calc(26px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .28s var(--ease);box-shadow:var(--sh-3);outline:none;visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 16px}
+.pg-h{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:750;color:var(--ink-3)}
+.pg-h svg{width:16px;height:16px;color:var(--ok)}
+.pg-amt{font-size:30px;font-weight:800;letter-spacing:-.03em;margin-top:10px}
+.pg-m{font-size:14px;color:var(--ink-2)}
+.prog{height:8px;border-radius:4px;background:var(--surface-3);overflow:hidden;margin:20px 0 12px}
+.prog i{display:block;height:100%;width:0;background:var(--brand);border-radius:4px}
+.pg-s{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:750;color:var(--ink-2);min-height:24px}
+.pg-s.ok{color:var(--ok-ink)}
+.pg-s svg{width:20px;height:20px}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--surface-3);border-top-color:var(--brand);animation:spn .8s linear infinite;flex-shrink:0}
+@keyframes spn{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-bed-double" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8" /> <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" /> <path d="M12 4v6" /> <path d="M2 18h20" /></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /> <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /> <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /> <path d="M10 6h4" /> <path d="M10 10h4" /> <path d="M10 14h4" /> <path d="M10 18h4" /></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <line x1="12" x2="12" y1="8" y2="12" /> <line x1="12" x2="12.01" y1="16" y2="16" /></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m9 12 2 2 4-4" /></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></symbol><symbol id="i-dog" viewBox="0 0 24 24"><path d="M11.25 16.25h1.5L12 17z" /> <path d="M16 14v.5" /> <path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" /> <path d="M8 14v.5" /> <path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" /></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol><symbol id="i-hand-coins" viewBox="0 0 24 24"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" /> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /> <path d="m2 16 6 6" /> <circle cx="16" cy="9" r="2.9" /> <circle cx="6" cy="5" r="3" /></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> <path d="M12 7v5l4 2" /></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></symbol><symbol id="i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" /></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /> <path d="M12 5v14" /></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /> <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /> <path d="M12 17.5v-11" /></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4" /> <line x1="10" x2="3" y1="4" y2="4" /> <line x1="21" x2="12" y1="12" y2="12" /> <line x1="8" x2="3" y1="12" y2="12" /> <line x1="21" x2="16" y1="20" y2="20" /> <line x1="12" x2="3" y1="20" y2="20" /> <line x1="14" x2="14" y1="2" y2="6" /> <line x1="8" x2="8" y1="10" y2="14" /> <line x1="16" x2="16" y1="18" y2="22" /></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></symbol><symbol id="i-user-round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" /> <path d="M20 21a8 8 0 0 0-16 0" /></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /> <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol></svg>
+<div class="app">
+  <div class="demo" role="note"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg>데모 · 실제 예약·결제되지 않아요</div>
+  <header class="hd">
+    <div class="hrow">
+      <button class="ib" id="back" onclick="back()" aria-label="이전 단계" hidden><svg class="i" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+      <div class="logo"><span class="m"><svg class="i" aria-hidden="true"><use href="#i-dog"/></svg></span>글램독<span class="t">공식 예약</span></div>
+      <span class="sp"></span>
+      <button class="lnk" id="chkBtn" onclick="toast('예약번호로 내 예약을 확인하는 곳이에요 (데모)')">예약 확인</button>
+    </div>
+    <nav class="steps" id="steps" aria-label="예약 단계"></nav>
+  </header>
+  <main id="main"></main>
+</div>
+<div class="bar" id="bar"><div class="lf"><small id="barS"></small><b id="barB" class="n"></b></div><button class="btn pri big" id="nextBtn" onclick="next()">다음</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="pg" role="dialog" aria-modal="true" aria-label="결제 진행" tabindex="-1">
+  <div class="grab"></div>
+  <div class="pg-h"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>안전 결제 · 데모</div>
+  <div class="pg-amt n" id="pgAmt"></div>
+  <div class="pg-m" id="pgM"></div>
+  <div class="prog"><i id="pgBar"></i></div>
+  <div class="pg-s" id="pgS" aria-live="polite"></div>
+</div>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const ic = id => `<svg class="i" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const won = n => Math.round(n).toLocaleString('ko-KR');
+const DOW = ['일','월','화','수','목','금','토'];
+const pd = iso => new Date(iso + 'T00:00:00Z');
+const addD = (iso, n) => { const d = pd(iso); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const nightsOf = (a, b) => Math.round((pd(b) - pd(a)) / 864e5);
+const md = iso => { const d = pd(iso); return (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + DOW[d.getUTCDay()] + ')'; };
+const man = n => (Math.round(n / 1000) / 10).toLocaleString('ko-KR') + '만';
+const nov = i => '2026-11-' + String(i).padStart(2, '0');
+
+/* 가상 데이터 */
+const BRS = [
+  {k:'yy', id:4, n:'양양', area:'강원 양양', mul:1},
+  {k:'yh', id:1, n:'영흥도', area:'인천 옹진', mul:1.1},
+  {k:'ty', id:3, n:'통영', area:'경남 통영', mul:1},
+  {k:'gj', id:2, n:'경주', area:'경북 경주', mul:1.05},
+  {k:'cp', id:5, n:'청평', area:'경기 가평', mul:.95},
+  {k:'gp', id:6, n:'가평', area:'경기 가평', mul:.95},
+];
+const T3 = (a, b, c) => [
+  {k:'std', n:'스탠다드', d:'기본에 충실한 객실', ic:'bed-double', cnt:a, base:2, max:4, p:89000},
+  {k:'dlx', n:'디럭스', d:'넓은 방 · 개별 바베큐', ic:'flame', cnt:b, base:2, max:4, p:119000},
+  {k:'fam', n:'패밀리', d:'방 2개 · 가족 여행', ic:'users', cnt:c, base:4, max:6, p:159000},
+];
+const TYPES = {
+  yy: [
+    {k:'std', n:'일반형', d:'실속 있는 기본 객실', ic:'bed-double', cnt:26, base:2, max:4, p:89000},
+    {k:'ter', n:'테라스형', d:'전용 테라스 · 바베큐 자리 가까움', ic:'sun', cnt:1, base:2, max:4, p:109000},
+    {k:'pen', n:'펜션형', d:'넓은 거실 · 가족 여행', ic:'building-2', cnt:4, base:4, max:6, p:159000},
+  ],
+  yh: T3(8, 4, 2), ty: T3(10, 6, 2), gj: T3(8, 4, 2), cp: T3(6, 3, 2),
+  gp: [
+    {k:'std', n:'스탠다드', d:'기본에 충실한 객실', ic:'bed-double', cnt:6, base:2, max:4, p:89000},
+    {k:'dup', n:'복층형', d:'2층 침실 · 넓은 거실', ic:'building-2', cnt:2, base:2, max:5, p:139000},
+  ],
+};
+const OTA_ADD = 10000, EXTRA = 20000, BBQ = 30000, COUPON = 10000;
+const OV = {
+  'yy|2026-11-13': {std:6, ter:1, pen:2},
+  'yy|2026-11-14': {std:2, ter:1, pen:1},
+  'yy|2026-11-21': {std:0, ter:0, pen:0},
+  'yy|2026-11-28': {std:1, ter:0, pen:0},
+};
+const BR = k => BRS.find(b => b.k === k);
+const rooms = k => TYPES[k].reduce((s, t) => s + t.cnt, 0);
+function h01(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; }
+function price(br, t, d) { const w = pd(d).getUTCDay(); return Math.round((t.p + (w === 6 ? 40000 : w === 5 ? 20000 : 0)) * BR(br).mul / 1000) * 1000; }
+function left(br, t, d) {
+  const o = OV[br + '|' + d];
+  if (o && o[t.k] != null) return o[t.k];
+  const w = pd(d).getUTCDay(), r = h01(br + t.k + d);
+  if (t.cnt === 1) return r < (w === 6 ? .3 : w === 5 ? .5 : .75) ? 1 : 0;
+  const share = w === 6 ? .14 : w === 5 ? .3 : w === 0 ? .55 : .5;
+  return Math.max(0, Math.min(t.cnt, Math.round(t.cnt * share * (.35 + r * 1.1))));
+}
+function dayInfo(br, d) { let tot = 0, low = Infinity; for (const t of TYPES[br]) { const n = left(br, t, d); tot += n; if (n > 0) low = Math.min(low, price(br, t, d)); } return {tot, low: tot ? low : null}; }
+function stayOk(br, a, b) { for (let d = a; d < b; d = addD(d, 1)) if (!dayInfo(br, d).tot) return false; return true; }
+
+/* 상태 */
+const S = {step:1, br:'yy', ci:'2026-11-13', co:'2026-11-14', picking:false, room:null, persons:2,
+  dogs:[{name:'', breed:'', w:''}], bbq:false, bbqT:'18:00', eta:'', req:'', name:'', tel:'',
+  pay:'card', agr:{refund:false, privacy:false, mkt:false}, open:{}, agrErr:false, reg:null, paying:false};
+const curType = () => TYPES[S.br].find(t => t.k === S.room) || null;
+function roomQuote(t) { let p = 0, lf = Infinity, n = 0; for (let d = S.ci; d < S.co; d = addD(d, 1)) { p += price(S.br, t, d); lf = Math.min(lf, left(S.br, t, d)); n++; } return {p, ota: p + OTA_ADD * n, left: lf, nights: n}; }
+function calc() {
+  const t = curType(); if (!t) return null;
+  const q = roomQuote(t), extraN = Math.max(0, S.persons - t.base), extra = extraN * q.nights * EXTRA, bbq = S.bbq ? BBQ : 0, cp = S.reg ? COUPON : 0;
+  return {room:q.p, ota:q.ota, nights:q.nights, extraN, extra, bbq, cp, total:q.p + extra + bbq - cp, otaTotal:q.ota + extra + bbq};
+}
+function fixRoom() { const t = curType(); if (t && roomQuote(t).left <= 0) S.room = null; }
+function fixDates() { if (stayOk(S.br, S.ci, S.co)) return; for (let i = 1; i <= 30; i++) if (dayInfo(S.br, nov(i)).tot) { S.ci = nov(i); S.co = addD(nov(i), 1); S.picking = false; return; } }
+function setRegular(name, code) {
+  S.reg = {name: String(name || '김서연').slice(0, 12), code: String(code || 'GLAM-7K2Q').slice(0, 20)};
+  S.name = S.reg.name; S.tel = '010-0000-1203'; S.persons = 2; S.eta = '18:30';
+  S.dogs = [{name:'보리', breed:'포메라니안', w:'s'}];
+  if (S.br === 'yy' && roomQuote(TYPES.yy[1]).left > 0) S.room = 'ter';
+}
+
+/* 화면 */
+const STEPS = ['지점','날짜','객실','손님','결제'];
+const strip = () => `<div class="strip">${ic('tag')}<span>직접 예약하면 다른 채널보다 저렴해요</span></div>`;
+function render() {
+  const fid = document.activeElement && document.activeElement.id;
+  $('#back').hidden = !(S.step > 1 && S.step < 6);
+  const st = $('#steps');
+  st.hidden = S.step === 6;
+  st.innerHTML = STEPS.map((n, i) => { const k = i + 1, cls = k < S.step ? 'done' : k === S.step ? 'on' : ''; return `<button class="st ${cls}" ${k < S.step ? `onclick="goStep(${k})" aria-label="${n} 단계로 돌아가기"` : 'tabindex="-1" aria-disabled="true"'}${k === S.step ? ' aria-current="step"' : ''}><i></i><span>${k} ${n}</span></button>`; }).join('');
+  $('#main').innerHTML = [v1, v2, v3, v4, v5, v6][S.step - 1]();
+  updBar();
+  if (fid) { const el = document.getElementById(fid); if (el && el !== document.activeElement) el.focus({preventScroll:true}); }
+}
+function regCard() {
+  const r = S.reg;
+  return `<section class="vipc" aria-label="단골 혜택"><div class="vt">${ic('sparkles')}<span>${esc(r.name)}님, 다시 오셨네요!</span></div>
+    <p>보리와 함께라면 단골 쿠폰 1만 원이 자동으로 적용돼요.</p>
+    <div class="vc"><span>쿠폰 ${esc(r.code)}</span><span>11월 30일까지</span><span>6번째 방문</span></div>
+    <div class="vf">${ic('history')}<span>지난 예약으로 채워 둘게요: 보리 (포메라니안 · 5kg 미만) · 2명 · 18:30 도착</span></div></section>`;
+}
+function loadCard() {
+  return `<section class="card load"><div class="ct">${ic('history')}다녀간 적 있으세요?</div>
+    <p class="p2">휴대폰 번호로 지난 예약을 불러오면 강아지 정보가 채워지고 단골 쿠폰이 적용돼요.</p>
+    <div class="row"><input class="inp" id="ldTel" type="tel" inputmode="numeric" placeholder="휴대폰 번호" aria-label="휴대폰 번호" autocomplete="off" onkeydown="if(event.key==='Enter')loadPrev()"><button class="btn" id="ldBtn" onclick="loadPrev()">불러오기</button></div></section>`;
+}
+function v1() {
+  return strip() + (S.reg ? regCard() : loadCard()) +
+  `<h1 class="h1">어디로 갈까요?</h1><p class="sub">15kg 이하 강아지라면 어느 지점이든 함께 묵어요</p>
+  <div class="brs" role="group" aria-label="지점">${BRS.map(b => `<button class="br" id="br-${b.k}" aria-pressed="${S.br === b.k}" onclick="pickBr('${b.k}')"><span class="ck">${ic('check')}</span><span class="bn">${b.n}</span><span class="ba">${b.area} · ${rooms(b.k)}실</span></button>`).join('')}</div>`;
+}
+function v2() {
+  const b = BR(S.br), n = nightsOf(S.ci, S.co);
+  let cells = '';
+  for (let i = 0; i < pd(nov(1)).getUTCDay(); i++) cells += '<span></span>';
+  for (let i = 1; i <= 30; i++) {
+    const d = nov(i), inf = dayInfo(S.br, d), w = pd(d).getUTCDay();
+    const isIn = d === S.ci, isCo = d === S.co, mid = d > S.ci && d < S.co;
+    const cls = 'day' + (w === 0 ? ' sun' : w === 6 ? ' sat' : '') + (isIn || isCo ? ' sel' : mid ? ' mid' : '') + (inf.tot ? '' : ' so');
+    const inner = isIn ? '<span class="p">입실</span>' : isCo ? '<span class="p">퇴실</span>' : inf.tot ? `<span class="p n">${man(inf.low)}</span><span class="l${inf.tot <= 3 ? ' low' : ''}">${inf.tot}실</span>` : '<span class="l">마감</span>';
+    const al = md(d) + (inf.tot ? `, 1박 최저 ${won(inf.low)}원, 남은 방 ${inf.tot}실` : ', 마감') + (isIn ? ', 입실일' : isCo ? ', 퇴실일' : '');
+    cells += `<button class="${cls}" id="d${i}" onclick="pickDay('${d}')" aria-label="${al}"><b class="n">${i}</b>${inner}</button>`;
+  }
+  const t = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Asia/Seoul'});
+  return strip() + `<h1 class="h1">언제 묵을까요?</h1><p class="sub">${b.n} · 날짜 아래는 1박 최저가와 남은 방이에요</p>
+  <div class="live"><i></i>실시간 남은 방<span>· ${t} 기준</span></div>
+  <section class="card cal" aria-label="2026년 11월"><div class="mh">2026년 11월</div>
+    <div class="wk" aria-hidden="true">${DOW.map(x => `<span>${x}</span>`).join('')}</div>
+    <div class="days">${cells}</div></section>
+  <div class="selbox"><div><small>입실</small><b>${md(S.ci)}</b></div><div><small>퇴실</small><b>${md(S.co)}</b></div><div class="nt">${n}박</div></div>
+  <p class="note">${ic('info')}<span>${S.picking ? '퇴실 날짜를 누르면 2박 이상으로 바뀌어요.' : '날짜를 누르면 1박으로 잡혀요. 이어서 퇴실 날짜를 누르면 늘어나요.'}</span></p>`;
+}
+function v3() {
+  const b = BR(S.br), n = nightsOf(S.ci, S.co);
+  return strip() + `<h1 class="h1">어떤 방이 좋을까요?</h1><p class="sub">${b.n} · ${md(S.ci)} ~ ${md(S.co)} · ${n}박</p>` +
+  TYPES[S.br].map(t => {
+    const q = roomQuote(t), so = q.left <= 0, last = S.reg && S.br === 'yy' && t.k === 'ter';
+    return `<button class="rm" id="rm-${t.k}" ${so ? 'disabled' : ''} aria-pressed="${S.room === t.k}" onclick="pickRoom('${t.k}')">
+      <span class="top"><span class="ic">${ic(t.ic)}</span><span class="tx"><span class="rn">${t.n}${last ? '<span class="bd vip">지난번 묵은 방</span>' : ''}</span><span class="rd">${t.d}</span></span><span class="rb">${ic('check')}</span></span>
+      <span class="facts"><span class="fact">${ic('users')}기본 ${t.base}명 · 최대 ${t.max}명</span><span class="fact">${ic('dog')}15kg 이하 2마리까지</span></span>
+      <span class="pr">${so ? '<span class="so">이 날짜엔 마감됐어요</span>' : `<span><span class="ota">야놀자 <s class="n">${won(q.ota)}원</s></span><span class="rl">${q.left === 1 ? '마지막 1실' : '남은 방 ' + q.left + '실'}</span></span><span class="our"><small>공식가 ${won(q.ota - q.p)}원 저렴</small><b class="n">${won(q.p)}원</b></span>`}</span>
+    </button>`;
+  }).join('') + `<p class="note">${ic('info')}<span>${n}박 요금이에요. 추가 인원과 바베큐는 다음 단계에서 고를 수 있어요.</span></p>`;
+}
+const BREEDS = ['포메라니안','말티즈','토이푸들','비숑','시츄','치와와','요크셔테리어','닥스훈트','웰시코기','시바견','프렌치불독','비글','미니어처 슈나우저','기타 (15kg 이하)'];
+const WTS = [['s','5kg 미만'],['m','5–10kg'],['l','10–15kg'],['x','15kg 넘음']];
+const ETAS = ['15:00','16:00','17:00','18:00','18:30','19:00','20:00','21:00','21시 이후'];
+function dogHtml(g, i) {
+  return `<div class="dog"><div class="dh2"><b>강아지 ${i + 1}</b>${S.dogs.length > 1 ? `<button class="rmv" id="dRm${i}" onclick="rmDog(${i})" aria-label="강아지 ${i + 1} 빼기">${ic('x')}</button>` : ''}</div>
+    <div class="r2"><div><label class="fl" for="dN${i}">이름</label><input class="inp" id="dN${i}" value="${esc(g.name)}" oninput="S.dogs[${i}].name=this.value" placeholder="예: 보리" autocomplete="off"></div>
+    <div><label class="fl" for="dB${i}">견종</label><select class="inp" id="dB${i}" onchange="S.dogs[${i}].breed=this.value"><option value="">고르기</option>${BREEDS.map(b => `<option${g.breed === b ? ' selected' : ''}>${b}</option>`).join('')}</select></div></div>
+    <span class="fl">몸무게</span><div class="seg" role="group" aria-label="강아지 ${i + 1} 몸무게">${WTS.map(([k, l]) => `<button id="dW${i}${k}" class="${k === 'x' ? 'x' : ''}" aria-pressed="${g.w === k}" onclick="setW(${i},'${k}')">${l}</button>`).join('')}</div>
+    ${g.w === 'x' ? `<p class="err">${ic('circle-alert')}<span>글램독은 15kg 이하 강아지만 함께 묵을 수 있어요.</span></p>` : ''}</div>`;
+}
+function v4() {
+  const t = curType(), c = calc();
+  return strip() + `<h1 class="h1">누가 함께 오나요?</h1><p class="sub">${BR(S.br).n} ${t.n} · ${md(S.ci)} ~ ${md(S.co)}</p>
+  <section class="card"><div class="ct">${ic('user-round')}예약자</div>
+    <label class="fl" for="fName">이름</label><input class="inp" id="fName" value="${esc(S.name)}" oninput="S.name=this.value" autocomplete="name" placeholder="예약자 이름">
+    <label class="fl" for="fTel">휴대폰</label><input class="inp" id="fTel" type="tel" inputmode="numeric" value="${esc(S.tel)}" oninput="S.tel=this.value" autocomplete="tel" placeholder="010-0000-0000"></section>
+  <section class="card"><div class="row2"><span class="lb"><span class="lt">${ic('users')}인원</span><span class="ls">기본 ${t.base}명 · 1명 더하면 1박 2만 원 · 최대 ${t.max}명</span></span>
+    <span class="stp"><button id="pMinus" onclick="chP(-1)" aria-label="인원 줄이기" ${S.persons <= 1 ? 'disabled' : ''}>${ic('minus')}</button><b class="n" aria-live="polite">${S.persons}</b><button id="pPlus" onclick="chP(1)" aria-label="인원 늘리기" ${S.persons >= t.max ? 'disabled' : ''}>${ic('plus')}</button></span></div>
+    ${c.extraN ? `<p class="addn">추가 ${c.extraN}명 × ${c.nights}박 = ${won(c.extra)}원</p>` : ''}</section>
+  <section class="card"><div class="ct">${ic('dog')}함께 오는 강아지<small>15kg 이하 2마리까지</small></div>
+    ${S.dogs.map(dogHtml).join('')}
+    ${S.dogs.length < 2 ? `<button class="btn full dash" id="addDog" onclick="addDog()">${ic('plus')}강아지 추가</button>` : ''}</section>
+  <section class="card"><button class="tgl" id="bbqT" role="switch" aria-checked="${S.bbq}" onclick="S.bbq=!S.bbq;render()"><span class="lb"><span class="lt">${ic('flame')}바베큐 추가</span><span class="ls">숯과 그릴을 준비해 둬요 · 30,000원</span></span><span class="sw"></span></button>
+    ${S.bbq ? `<div class="chips" role="group" aria-label="바베큐 시간">${['18:00','19:30'].map(x => `<button class="chip" id="bq${x.replace(':', '')}" aria-pressed="${S.bbqT === x}" onclick="S.bbqT='${x}';render()">${x}</button>`).join('')}</div>` : ''}</section>
+  <section class="card"><label class="fl" for="fEta">도착 예정 시간</label>
+    <select class="inp" id="fEta" onchange="S.eta=this.value"><option value="">고르기</option>${ETAS.map(x => `<option${S.eta === x ? ' selected' : ''}>${x}</option>`).join('')}</select>
+    <label class="fl" for="fReq">요청 사항 (선택)</label>
+    <textarea class="inp" id="fReq" rows="3" oninput="S.req=this.value" placeholder="예: 수건 추가, 늦은 도착">${esc(S.req)}</textarea></section>`;
+}
+const PAYS = [['card','신용카드','<span class="pl cc">' + ic('credit-card') + '</span>'], ['kakao','카카오페이','<span class="pl kakao">K</span>'], ['naver','네이버페이','<span class="pl naver">N</span>'], ['toss','토스페이','<span class="pl toss">T</span>']];
+const AG = [
+  ['refund', true, '환불 규정에 동의해요', '입실 7일 전까지 전액, 3~6일 전에는 50%를 돌려드려요. 2일 전부터는 돌려드리기 어려워요. (예시 규정)'],
+  ['privacy', true, '개인정보 수집·이용에 동의해요', '예약과 입실 안내를 위해 이름, 휴대폰, 강아지 정보를 받아요. 퇴실 후 1년 동안 보관해요. (예시)'],
+  ['mkt', false, '혜택 알림을 받을게요', '단골 쿠폰과 강아지 생일 혜택을 알림톡으로 보내 드려요. 언제든 끌 수 있어요.'],
+];
+function v5() {
+  const t = curType(), c = calc(), b = BR(S.br), dogs = S.dogs.map(g => g.name.trim() || '이름 미정').join(', ');
+  const all = AG.every(a => S.agr[a[0]]);
+  return strip() + `<h1 class="h1">확인하고 결제해요</h1><p class="sub">결제하면 바로 예약이 확정돼요</p>
+  <section class="card"><div class="bk"><b>${b.n} · ${t.n}</b><span>${md(S.ci)} 15시 입실 ~ ${md(S.co)} 11시 퇴실 · ${c.nights}박</span><span>${S.persons}명 · 강아지 ${S.dogs.length}마리 (${esc(dogs)})${S.bbq ? ' · 바베큐 ' + S.bbqT : ''}</span></div>
+    <div class="ln"><span>객실 ${c.nights}박</span><b class="n">${won(c.room)}원</b></div>
+    ${c.extra ? `<div class="ln"><span>추가 인원 ${c.extraN}명 × ${c.nights}박</span><b class="n">${won(c.extra)}원</b></div>` : ''}
+    ${c.bbq ? `<div class="ln"><span>바베큐 (${S.bbqT})</span><b class="n">${won(c.bbq)}원</b></div>` : ''}
+    ${c.cp ? `<div class="ln cp"><span>단골 쿠폰 ${esc(S.reg.code)}</span><b class="n">-${won(c.cp)}원</b></div>` : ''}
+    <div class="tot"><span>합계</span><b class="n">${won(c.total)}원</b></div>
+    <div class="save">${ic('tag')}<span>야놀자에서 같은 예약보다 ${won(c.otaTotal - c.total)}원 저렴해요</span></div></section>
+  <section class="card"><div class="ct">${ic('wallet')}결제 수단</div><div class="pays" role="radiogroup" aria-label="결제 수단">${PAYS.map(([k, n, m]) => `<label class="pm${S.pay === k ? ' on' : ''}"><input type="radio" name="pay" id="pay-${k}" value="${k}" ${S.pay === k ? 'checked' : ''} onchange="S.pay='${k}';render()">${m}<span>${n}</span></label>`).join('')}</div></section>
+  <section class="card agr${S.agrErr && !(S.agr.refund && S.agr.privacy) ? ' bad' : ''}" id="agr">
+    <label class="all"><input type="checkbox" class="cb" id="agAll" ${all ? 'checked' : ''} onchange="agAll(this.checked)">모두 동의해요</label>
+    ${AG.map(([k, req, l, txt]) => `<div class="ag"><label><input type="checkbox" class="cb" id="ag-${k}" ${S.agr[k] ? 'checked' : ''} onchange="S.agr.${k}=this.checked;render()"><span><em class="${req ? '' : 'o'}">(${req ? '필수' : '선택'})</em> ${l}</span></label><button class="more" id="mo-${k}" aria-expanded="${!!S.open[k]}" onclick="S.open.${k}=!S.open.${k};render()">${S.open[k] ? '접기' : '보기'}</button></div>${S.open[k] ? `<p class="terms">${txt}</p>` : ''}`).join('')}
+    ${S.agrErr && !(S.agr.refund && S.agr.privacy) ? `<p class="err">${ic('circle-alert')}<span>필수 항목에 동의해야 결제할 수 있어요.</span></p>` : ''}
+  </section>`;
+}
+function bookingNo() { const y = new Date(Date.now() + 9 * 3600e3).toISOString().slice(2, 10).replace(/-/g, ''); return 'G' + y + '-' + BR(S.br).id + '-0012'; }
+function v6() {
+  const t = curType(), c = calc(), b = BR(S.br), m = PAYS.find(p => p[0] === S.pay)[1];
+  const dogs = S.dogs.map(g => g.name.trim() || '이름 미정').join(', ');
+  const ota = Math.round(c.total * .15), card = Math.round(c.total * .03);
+  return `<div class="done-h"><span class="okc">${ic('check')}</span><h1>예약이 확정됐어요</h1><p>${esc(S.name)}님께 예약 확인 알림톡을 보냈어요</p><span class="bno">예약번호 <b class="n">${bookingNo()}</b></span></div>
+  <section class="card"><dl class="kv"><dt>지점·객실</dt><dd>${b.n} · ${t.n}</dd><dt>날짜</dt><dd>${md(S.ci)} ~ ${md(S.co)} · ${c.nights}박</dd><dt>인원</dt><dd>${S.persons}명 · 강아지 ${S.dogs.length}마리</dd>${S.bbq ? `<dt>바베큐</dt><dd>${S.bbqT}</dd>` : ''}<dt>도착</dt><dd>${esc(S.eta || '미정')}</dd><dt>결제</dt><dd class="n">${won(c.total)}원 · ${m}</dd></dl></section>
+  <div class="okbox">${ic('circle-check')}<div><b>웰컴폼은 이미 작성됐어요</b><span>예약할 때 넣은 강아지 정보(${esc(dogs)})로 채웠어요. 따로 쓰지 않아도 돼요.</span></div></div>
+  <section class="ops" aria-label="운영자 화면에서는"><h2>${ic('sliders-horizontal')}운영자 화면에서는</h2><p class="ps">결제가 끝나는 순간 이렇게 바뀌어요</p><ul>
+    <li><span class="oi">${ic('list-checks')}</span><div><span class="ot">체크인 리스트에 바로 들어가요</span><small>${b.n} · ${md(S.ci)} 입실 대기 · 채널 '직접예약'</small></div></li>
+    <li><span class="oi">${ic('lock')}</span><div><span class="ot">다른 채널의 같은 방이 자동으로 막혀요</span><small>야놀자 · 여기어때 · 네이버 · 반려생활 · 아고다</small></div></li>
+    <li><span class="oi">${ic('users')}</span><div><span class="ot">손님 기록(CRM)에 방문이 쌓여요</span><small>${S.reg ? esc(S.name) + '님 6번째 방문 · 단골 쿠폰 사용' : '새 손님으로 등록 · 혜택 알림 ' + (S.agr.mkt ? '동의' : '미동의')}</small></div></li>
+    <li><span class="oi">${ic('hand-coins')}</span><div><span class="ot">수수료가 줄어요<span class="ga">가정치</span></span>
+      <div class="fee"><div class="fr"><span>예약 채널 수수료 약 15%</span><b class="n">${won(ota)}원</b><span class="fb"><i style="width:100%;background:var(--bad)"></i></span></div>
+      <div class="fr"><span>카드 결제 수수료 약 3%</span><b class="n">${won(card)}원</b><span class="fb"><i style="width:20%;background:var(--ok)"></i></span></div></div>
+      <small>이 예약 하나로 약 ${won(ota - card)}원을 아껴요</small></div></li>
+  </ul></section>
+  <div class="acts"><a class="btn full" id="toPay" href="pay.html">${ic('receipt')}현장 추가요금 결제 화면 보기</a><button class="btn pri big full" id="again" onclick="location.reload()">처음으로</button></div>`;
+}
+function updBar() {
+  const bar = $('#bar');
+  bar.hidden = S.step === 6;
+  if (S.step === 6) return;
+  const b = BR(S.br), n = nightsOf(S.ci, S.co), t = curType(), c = calc();
+  let sm = '', bg = '', btn = '다음';
+  bar.classList.toggle('full', S.step === 5);
+  if (S.step === 1) { sm = '고른 지점'; bg = b.n + ' · ' + rooms(S.br) + '실'; }
+  else if (S.step === 2) { sm = b.n + ' · ' + n + '박'; bg = md(S.ci) + ' ~ ' + md(S.co); }
+  else if (S.step === 3) { sm = t ? t.n + ' · ' + n + '박' : '객실을 골라 주세요'; bg = t ? won(roomQuote(t).p) + '원' : ''; }
+  else if (S.step === 4) { sm = '지금까지 합계'; bg = won(c.total) + '원'; }
+  else btn = won(c.total) + '원 결제하기';
+  $('#barS').textContent = sm; $('#barB').textContent = bg; $('#nextBtn').textContent = btn;
+}
+
+/* 동작 */
+function goTop() { window.scrollTo(0, 0); }
+function goStep(k) { S.step = k; S.picking = false; render(); goTop(); }
+function back() { if (S.step > 1 && S.step < 6) { S.step--; S.picking = false; render(); goTop(); } }
+function focusField(id) { const el = document.getElementById(id); if (!el) return; el.focus({preventScroll:true}); window.scrollTo({top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 150), behavior:'smooth'}); }
+function v4ok() {
+  if (!S.name.trim()) return ['fName', '예약자 이름을 넣어 주세요'];
+  if (S.tel.replace(/\D/g, '').length < 10) return ['fTel', '휴대폰 번호를 확인해 주세요'];
+  const big = S.dogs.findIndex(g => g.w === 'x'); if (big >= 0) return ['dW' + big + 'x', '15kg이 넘는 강아지는 함께 묵을 수 없어요'];
+  const nw = S.dogs.findIndex(g => !g.w); if (nw >= 0) return ['dW' + nw + 's', '강아지 몸무게를 골라 주세요'];
+  return null;
+}
+function next() {
+  if (S.step === 3 && !curType()) { toast('객실을 골라 주세요'); return; }
+  if (S.step === 4) { const e = v4ok(); if (e) { toast(e[1]); focusField(e[0]); return; } }
+  if (S.step === 5) { payNow(); return; }
+  S.step++; S.picking = false; render(); goTop();
+}
+function loadPrev() {
+  const v = ($('#ldTel').value || '').replace(/\D/g, '');
+  if (v.length < 4) { toast('휴대폰 번호를 넣어 주세요'); $('#ldTel').focus({preventScroll:true}); return; }
+  setRegular('김서연', 'GLAM-7K2Q'); render(); toast('지난 예약을 불러왔어요 (데모)');
+}
+function pickBr(k) {
+  if (S.br !== k) { S.br = k; S.room = null; fixDates(); if (S.reg && k === 'yy' && roomQuote(TYPES.yy[1]).left > 0) S.room = 'ter'; }
+  render();
+}
+function pickDay(d) {
+  const inf = dayInfo(S.br, d);
+  if (S.picking && d > S.ci) {
+    if (nightsOf(S.ci, d) > 7) { toast('최대 7박까지 예약할 수 있어요'); return; }
+    if (stayOk(S.br, S.ci, d)) { S.co = d; S.picking = false; fixRoom(); render(); return; }
+    if (!inf.tot) { toast('중간에 마감된 날이 있어요'); return; }
+    S.ci = d; S.co = addD(d, 1); S.picking = true; fixRoom(); render(); toast('중간에 마감된 날이 있어 이 날로 입실을 다시 잡았어요'); return;
+  }
+  if (!inf.tot) { toast('이 날은 마감됐어요. 다른 날을 골라 주세요'); return; }
+  S.ci = d; S.co = addD(d, 1); S.picking = true; fixRoom(); render();
+}
+function pickRoom(k) { S.room = k; const t = curType(); if (S.persons > t.max) S.persons = t.max; render(); }
+function chP(x) { const t = curType(); S.persons = Math.max(1, Math.min(t.max, S.persons + x)); render(); }
+function setW(i, k) { S.dogs[i].w = k; render(); }
+function addDog() { if (S.dogs.length < 2) { S.dogs.push({name:'', breed:'', w:''}); render(); const el = document.getElementById('dN' + (S.dogs.length - 1)); if (el) el.focus({preventScroll:true}); } }
+function rmDog(i) { S.dogs.splice(i, 1); render(); }
+function agAll(on) { AG.forEach(a => S.agr[a[0]] = on); render(); }
+function payNow() {
+  if (S.paying) return;
+  if (!S.agr.refund || !S.agr.privacy) { S.agrErr = true; render(); toast('필수 항목에 동의해 주세요'); focusField('agAll'); return; }
+  S.paying = true;
+  const c = calc(), m = PAYS.find(p => p[0] === S.pay)[1];
+  $('#pgAmt').textContent = won(c.total) + '원';
+  $('#pgM').textContent = m + ' · 글램독 ' + BR(S.br).n;
+  const st = $('#pgS'); st.className = 'pg-s'; st.innerHTML = '<span class="spin"></span>결제를 확인하고 있어요';
+  const bar = $('#pgBar'); bar.style.transition = 'none'; bar.style.width = '0';
+  $('#scrim').classList.add('on'); const pg = $('#pg'); pg.classList.add('on'); pg.focus({preventScroll:true});
+  requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.transition = 'width 1.2s linear'; bar.style.width = '100%'; }));
+  setTimeout(() => { st.className = 'pg-s ok'; st.innerHTML = ic('circle-check') + '결제가 끝났어요'; }, 1250);
+  setTimeout(() => { $('#scrim').classList.remove('on'); pg.classList.remove('on'); S.paying = false; S.step = 6; render(); goTop(); }, 1750);
+}
+let tt;
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('on'), 2400); }
+
+/* 시작 */
+const QS = new URLSearchParams(location.search);
+if (QS.get('c')) setRegular(QS.get('g'), QS.get('c'));
+render();
+</script>
+</body>
+</html>
