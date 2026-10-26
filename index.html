@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>주인장 · 글램독이 직접 만든 숙소 운영 시스템</title>
+<meta name="description" content="모든 채널 예약을 한 화면에 모으고, 다녀간 손님을 기억해 공식 예약창으로 다시 모십니다. 6개 지점 96실을 운영하며 직접 만든 숙소 운영 시스템.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="주인장 · 예약은 한 화면에, 손님은 다시 우리에게">
+<meta property="og:description" content="글램독이 6개 지점 96실을 운영하며 직접 만든 숙소 운영 시스템. 예약 통합·자동 방막기·현장 운영에 이어 CRM·공식 예약창·결제까지.">
+<meta property="og:image" content="https://peterchoi5177.github.io/juinjang/og.jpg">
+<meta property="og:url" content="https://peterchoi5177.github.io/juinjang/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --bg:#F6F5F1; --surface:#FFFFFF; --surface-2:#FAF9F6; --surface-3:#EEECE6; --line:#E4E1D9; --line-2:#EFEDE7;
+  --ink:#17201B; --ink-2:#545E57; --ink-3:#646B66;
+  --brand:#1F5A36; --brand-press:#184A2C; --brand-soft:#E4EFE7; --brand-ink:#1F5A36; --deep:#123622;
+  --ok:#2E8549; --ok-soft:#E3F1E7; --ok-ink:#22673A;
+  --warn:#A8650B; --warn-soft:#FCF1DE; --warn-ink:#8F4E07;
+  --bad:#C2402F; --bad-soft:#FBE9E6; --bad-ink:#A3301F;
+  --info:#2A5DB0; --info-soft:#E7EEF9; --info-ink:#244F96;
+  --sh-1:0 1px 2px rgb(23 32 27/.05); --sh-2:0 6px 20px rgb(23 32 27/.08); --sh-3:0 24px 60px rgb(23 32 27/.18);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.015em;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;letter-spacing:inherit}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:8px}
+.w{max-width:1120px;margin:0 auto;padding:0 24px}
+img{display:block;max-width:100%}
+
+/* 머리 */
+.top{position:sticky;top:0;z-index:30;background:rgb(246 245 241/.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.top.sc{border-bottom-color:var(--line)}
+.top .w{height:64px;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.03em}
+.logo .m{width:34px;height:34px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center}
+.logo small{font-size:12.5px;font-weight:650;color:var(--ink-3);letter-spacing:0}
+.sp{flex:1}
+.nl{display:flex;gap:2px}
+.nl a{height:44px;display:inline-flex;align-items:center;padding:0 12px;border-radius:12px;font-size:15px;font-weight:650;color:var(--ink-2)}
+.nl a:hover{background:var(--surface-3);color:var(--ink)}
+.btn{min-height:48px;padding:0 20px;border-radius:14px;font-weight:750;font-size:15.5px;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:transform .15s var(--ease),background .15s}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--brand);color:#fff}
+.btn.pri:hover{background:var(--brand-press)}
+.btn.sec{background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.btn.sec:hover{border-color:#C9C6BD}
+.btn.sm{min-height:44px;padding:0 14px;font-size:14.5px;border-radius:12px}
+.btn svg{width:18px;height:18px}
+
+/* 히어로 */
+.hero{padding:56px 0 40px}
+.hero .w{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:750;color:var(--warn-ink);background:var(--warn-soft);border-radius:999px;padding:5px 12px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--warn);display:inline-block}
+.eyebrow{font-size:16px;font-weight:700;color:var(--brand-ink);margin:18px 0 10px}
+h1{font-size:50px;line-height:1.18;font-weight:850;letter-spacing:-.045em}
+h1 em{font-style:normal;color:var(--brand)}
+.lede{font-size:18px;color:var(--ink-2);margin-top:18px;max-width:520px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.sub-link{margin-top:14px;font-size:14.5px;color:var(--ink-3);display:flex;gap:14px;flex-wrap:wrap}
+.sub-link a{font-weight:700;color:var(--brand-ink);display:inline-flex;align-items:center;gap:4px;min-height:32px}
+.sub-link svg{width:16px;height:16px}
+.vis{position:relative;height:540px}
+.phone{position:absolute;right:40px;top:0;width:270px;border-radius:40px;background:#1c1f1d;padding:10px;box-shadow:var(--sh-3)}
+.phone .scr{border-radius:31px;overflow:hidden;height:520px;background:#fff}
+.phone img{width:100%}
+.float{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-2);padding:12px 14px;font-size:13.5px;display:flex;gap:10px;align-items:center;max-width:250px}
+.float .fi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex-shrink:0}
+.float b{display:block;font-size:14px;font-weight:800}
+.float span{color:var(--ink-2);line-height:1.4;display:block}
+.f1{left:0;top:110px;animation:fl 6s ease-in-out infinite}
+.f2{left:30px;bottom:70px;animation:fl 6s 1.5s ease-in-out infinite}
+.f3{right:0;bottom:150px;animation:fl 6s 3s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.float{animation:none}}
+
+/* 숫자 띠 */
+.stats{background:var(--deep);color:#fff}
+.stats .w{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:26px;padding-bottom:26px}
+.st b{display:block;font-size:34px;font-weight:850;letter-spacing:-.04em;line-height:1.1}
+.st span{font-size:14px;color:rgb(255 255 255/.78)}
+
+/* 공통 섹션 */
+section{padding:72px 0}
+.kick{font-size:14px;font-weight:800;color:var(--brand-ink);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.kick .tag{font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;letter-spacing:0}
+.tag.live{background:var(--ok-soft);color:var(--ok-ink)}
+.tag.dev{background:var(--warn-soft);color:var(--warn-ink)}
+.tag.plan{background:var(--info-soft);color:var(--info-ink)}
+h2{font-size:36px;line-height:1.25;font-weight:850;letter-spacing:-.04em;margin-top:10px}
+.sd{font-size:17px;color:var(--ink-2);margin-top:12px;max-width:640px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh-1)}
+
+/* 문제 */
+.probs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px}
+.prob{padding:22px}
+.prob .n{font-size:13px;font-weight:800;color:var(--bad-ink)}
+.prob b{display:block;font-size:19px;font-weight:800;margin:6px 0 6px;letter-spacing:-.03em}
+.prob p{font-size:15px;color:var(--ink-2)}
+.answer{margin-top:18px;padding:22px 24px;border-radius:22px;background:var(--brand);color:#fff;font-size:20px;font-weight:750;letter-spacing:-.03em;display:flex;gap:12px;align-items:center}
+.answer svg{width:26px;height:26px}
+
+/* 지금 되는 것 */
+.live-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px;margin-top:30px;align-items:start}
+.feat{display:grid;gap:12px}
+.ft{padding:18px 20px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px}
+.ft .fi{width:44px;height:44px;border-radius:14px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.ft b{font-size:17px;font-weight:800;display:block;letter-spacing:-.02em}
+.ft p{font-size:14.5px;color:var(--ink-2);margin-top:2px}
+.browser{border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--sh-3);background:#fff}
+.browser .bh{height:30px;background:var(--surface-3);display:flex;align-items:center;gap:6px;padding:0 12px}
+.browser .bh i{width:10px;height:10px;border-radius:50%;background:#D5D2CA}
+.shotcap{font-size:13px;color:var(--ink-3);margin-top:10px;text-align:center}
+
+/* 다음 단계 */
+.next{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:34px;position:relative}
+.step{position:relative;padding:20px 16px 18px;border-radius:20px;background:var(--surface-2);border:1px solid var(--line)}
+.step .no{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;display:grid;place-items:center;font-size:15px}
+.step b{display:block;font-size:16.5px;font-weight:800;margin:12px 0 4px;letter-spacing:-.02em}
+.step p{font-size:14px;color:var(--ink-2)}
+.step .ar{position:absolute;right:-11px;top:34px;width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;color:var(--brand);z-index:2}
+.step .ar svg{width:14px;height:14px;stroke-width:2.4}
+.step.hi{background:var(--brand-soft);border-color:#BFD8C7}
+.back{margin-top:12px;font-size:14px;color:var(--ink-3);display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.back svg{width:16px;height:16px}
+.money{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr);gap:12px;margin-top:22px}
+.mo{padding:20px 22px}
+.mo small{font-size:14px;font-weight:700;color:var(--ink-3)}
+.mo b{display:block;font-size:30px;font-weight:850;letter-spacing:-.04em;margin-top:4px}
+.mo.bad b{color:var(--bad-ink)}
+.mo.ok b{color:var(--ok-ink)}
+.mo.sum{background:var(--deep);color:#fff;border-color:var(--deep)}
+.mo.sum small{color:rgb(255 255 255/.75)}
+.mo.sum b{color:#fff}
+.mo p{font-size:13px;color:var(--ink-3);margin-top:4px}
+.mo.sum p{color:rgb(255 255 255/.7)}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.tc{padding:22px;display:flex;flex-direction:column;gap:10px}
+.tc .fi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center}
+.tc b{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.tc ul{list-style:none;display:grid;gap:6px;font-size:14.5px;color:var(--ink-2)}
+.tc li{display:flex;gap:8px;align-items:flex-start}
+.tc li svg{width:16px;height:16px;color:var(--ok);margin-top:4px}
+.tc .btn{margin-top:auto;align-self:flex-start}
+
+/* 장점 */
+.why{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px}
+.wy{padding:24px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px}
+.wy .fi{width:48px;height:48px;border-radius:15px;background:var(--deep);color:#fff;display:grid;place-items:center}
+.wy b{font-size:19px;font-weight:800;display:block;letter-spacing:-.03em}
+.wy p{font-size:15px;color:var(--ink-2);margin-top:4px}
+
+/* 가능성 */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px}
+.pl{padding:24px;display:flex;flex-direction:column;gap:8px}
+.pl .who{font-size:14px;font-weight:800;color:var(--brand-ink)}
+.pl b{font-size:22px;font-weight:850;letter-spacing:-.03em}
+.pl .pr{font-size:17px;font-weight:800;margin-top:2px}
+.pl p{font-size:14.5px;color:var(--ink-2)}
+.pl.mid{border:2px solid var(--brand)}
+.note{font-size:13px;color:var(--ink-3);margin-top:12px}
+.expand{margin-top:16px;padding:20px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.expand b{font-size:17px;font-weight:800}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:36px;padding:0 14px;border-radius:999px;background:var(--surface-3);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.chip.on{background:var(--brand);color:#fff}
+.chip svg{width:16px;height:16px}
+
+/* 로드맵 */
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:30px}
+.rd{padding:22px 20px;position:relative}
+.rd .when{font-size:13.5px;font-weight:800;color:var(--ink-3)}
+.rd b{display:block;font-size:18px;font-weight:850;margin:4px 0 10px;letter-spacing:-.03em}
+.rd ul{list-style:none;display:grid;gap:6px;font-size:14.5px;color:var(--ink-2)}
+.rd li{padding-left:14px;position:relative}
+.rd li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
+.rd.now{background:var(--brand);color:#fff;border-color:var(--brand)}
+.rd.now .when{color:rgb(255 255 255/.75)}
+.rd.now ul{color:rgb(255 255 255/.88)}
+.rd.now li::before{background:#fff}
+
+/* 마지막 */
+.final{background:var(--deep);color:#fff;text-align:center;padding:72px 0}
+.final h2{color:#fff}
+.final .sd{color:rgb(255 255 255/.78);margin-left:auto;margin-right:auto}
+.final .ctas{justify-content:center}
+.final .btn.sec{background:rgb(255 255 255/.08);border-color:rgb(255 255 255/.25);color:#fff}
+.final .btn.pri{background:#fff;color:var(--deep)}
+footer{padding:28px 0 40px;font-size:13.5px;color:var(--ink-3)}
+footer .w{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center}
+footer a{font-weight:700;color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:#fff;border-radius:14px;padding:12px 18px;font-weight:650;opacity:0;pointer-events:none;transition:all .25s var(--ease);z-index:50;font-size:15px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:980px){
+  .hero .w,.live-grid{grid-template-columns:minmax(0,1fr)}
+  .vis{height:520px;max-width:520px;margin:0 auto;width:100%}
+  .phone{right:50%;transform:translateX(50%)}
+  .loop{grid-template-columns:minmax(0,1fr)}
+  .step .ar{right:auto;left:22px;top:auto;bottom:-15px;transform:rotate(90deg)}
+  .money,.tri,.plans{grid-template-columns:minmax(0,1fr)}
+  .road{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nl{display:none}
+}
+@media (max-width:640px){
+  .w{padding:0 18px}
+  .hero{padding:32px 0 24px}
+  h1{font-size:34px}
+  .lede{font-size:16.5px}
+  h2{font-size:27px}
+  .sd{font-size:16px}
+  section{padding:52px 0}
+  .stats .w{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+  .st b{font-size:28px}
+  .probs,.why,.road{grid-template-columns:minmax(0,1fr)}
+  .vis{height:500px}
+  .phone{width:240px}
+  .phone .scr{height:470px}
+  .float{max-width:200px;font-size:12.5px;padding:10px 12px}
+  .float .fi{width:32px;height:32px}
+  .f1{top:60px;left:0}
+  .f2{bottom:40px;left:0}
+  .f3{right:0;bottom:170px}
+  .ctas .btn{flex:1 1 100%}
+  .answer{font-size:17px}
+  .wy{grid-template-columns:44px minmax(0,1fr);padding:20px}
+  .wy .fi{width:44px;height:44px}
+  .logo small{display:none}
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /> <path d="m21 21-4.3-4.3" /></symbol><symbol id="i-message-square-text" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /> <path d="M13 8H7" /> <path d="M17 12H7" /></symbol><symbol id="i-bed-double" viewBox="0 0 24 24"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8" /> <path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4" /> <path d="M12 4v6" /> <path d="M2 18h20" /></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v4" /> <path d="M16 2v4" /> <rect width="18" height="18" x="3" y="4" rx="2" /> <path d="M3 10h18" /> <path d="M8 14h.01" /> <path d="M12 14h.01" /> <path d="M16 14h.01" /> <path d="M8 18h.01" /> <path d="M12 18h.01" /> <path d="M16 18h.01" /></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol><symbol id="i-list-checks" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /> <path d="M13 6h8" /> <path d="M13 12h8" /> <path d="M13 18h8" /></symbol><symbol id="i-calendar-range" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" /> <path d="M16 2v4" /> <path d="M3 10h18" /> <path d="M8 2v4" /> <path d="M17 14h-6" /> <path d="M13 18H7" /> <path d="M7 14h.01" /> <path d="M17 18h.01" /></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol><symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /> <circle cx="19" cy="12" r="1" /> <circle cx="5" cy="12" r="1" /></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol><symbol id="i-dog" viewBox="0 0 24 24"><path d="M11.25 16.25h1.5L12 17z" /> <path d="M16 14v.5" /> <path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309" /> <path d="M8 14v.5" /> <path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5" /></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /> <path d="M12 5v14" /></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol><symbol id="i-banknote" viewBox="0 0 24 24"><rect width="20" height="12" x="2" y="6" rx="2" /> <circle cx="12" cy="12" r="2" /> <path d="M6 12h.01M18 12h.01" /></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <line x1="12" x2="12" y1="8" y2="12" /> <line x1="12" x2="12.01" y1="16" y2="16" /></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2" /> <path d="M14 2v2" /> <path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" /> <path d="M6 2v2" /></symbol><symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" /> <circle cx="7" cy="17" r="2" /> <path d="M9 17h6" /> <circle cx="17" cy="17" r="2" /></symbol><symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7" /> <path d="m7.5 4.27 9 5.15" /></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></symbol><symbol id="i-key-round" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" /> <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" /></symbol><symbol id="i-tent" viewBox="0 0 24 24"><path d="M3.5 21 14 3" /> <path d="M20.5 21 10 3" /> <path d="M15.5 21 12 15l-3.5 6" /> <path d="M2 21h20" /></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" /> <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /> <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" /> <path d="M2 7h20" /> <path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7" /></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /> <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /> <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /> <path d="M12 17.5v-11" /></symbol><symbol id="i-calculator" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" /> <line x1="8" x2="16" y1="6" y2="6" /> <line x1="16" x2="16" y1="14" y2="18" /> <path d="M16 10h.01" /> <path d="M12 10h.01" /> <path d="M8 10h.01" /> <path d="M12 14h.01" /> <path d="M8 14h.01" /> <path d="M12 18h.01" /> <path d="M8 18h.01" /></symbol><symbol id="i-chart-line" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="m19 9-5 5-4-4-3 3" /></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol><symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z" /> <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /> <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /> <circle cx="12" cy="12" r="3" /></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /> <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol><symbol id="i-log-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /> <polyline points="16 17 21 12 16 7" /> <line x1="21" x2="9" y1="12" y2="12" /></symbol><symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /> <path d="M12 7v5l4 2" /></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /> <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /> <rect x="6" y="14" width="12" height="8" rx="1" /></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol><symbol id="i-columns-3" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M9 3v18" /> <path d="M15 3v18" /></symbol><symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6" /> <path d="m4 14 6-6 2-3" /> <path d="M2 5h12" /> <path d="M7 2h1" /> <path d="m22 22-5-10-5 10" /> <path d="M14 18h6" /></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol><symbol id="i-spray-can" viewBox="0 0 24 24"><path d="M3 3h.01" /> <path d="M7 5h.01" /> <path d="M11 7h.01" /> <path d="M3 7h.01" /> <path d="M7 9h.01" /> <path d="M3 11h.01" /> <rect width="4" height="4" x="15" y="5" /> <path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2" /> <path d="m13 14 8-2" /> <path d="m13 19 8-2" /></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></symbol><symbol id="i-notebook-pen" viewBox="0 0 24 24"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" /> <path d="M2 6h4" /> <path d="M2 10h4" /> <path d="M2 14h4" /> <path d="M2 18h4" /> <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /></symbol><symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v4" /> <path d="M16 2v4" /> <rect width="18" height="18" x="3" y="4" rx="2" /> <path d="M3 10h18" /> <path d="m9 16 2 2 4-4" /></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol><symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></symbol><symbol id="i-messages-square" viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z" /> <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" /></symbol><symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /> <polyline points="16 7 22 7 22 13" /></symbol><symbol id="i-user-round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" /> <path d="M20 21a8 8 0 0 0-16 0" /></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" /></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0" /> <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <polyline points="12 6 12 12 16 14" /></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6" /> <path d="M10 14 21 3" /> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></symbol><symbol id="i-hand-coins" viewBox="0 0 24 24"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" /> <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" /> <path d="m2 16 6 6" /> <circle cx="16" cy="9" r="2.9" /> <circle cx="6" cy="5" r="3" /></symbol><symbol id="i-undo-2" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5" /> <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" /></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4" /> <line x1="10" x2="3" y1="4" y2="4" /> <line x1="21" x2="12" y1="12" y2="12" /> <line x1="8" x2="3" y1="12" y2="12" /> <line x1="21" x2="16" y1="20" y2="20" /> <line x1="12" x2="3" y1="20" y2="20" /> <line x1="14" x2="14" y1="2" y2="6" /> <line x1="8" x2="8" y1="10" y2="14" /> <line x1="16" x2="16" y1="18" y2="22" /></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" /> <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /> <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" /> <path d="M10 6h4" /> <path d="M10 10h4" /> <path d="M10 14h4" /> <path d="M10 18h4" /></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m9 12 2 2 4-4" /></symbol><symbol id="i-circle-dashed" viewBox="0 0 24 24"><path d="M10.1 2.182a10 10 0 0 1 3.8 0" /> <path d="M13.9 21.818a10 10 0 0 1-3.8 0" /> <path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /> <path d="M2.182 13.9a10 10 0 0 1 0-3.8" /> <path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /> <path d="M21.818 10.1a10 10 0 0 1 0 3.8" /> <path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /> <path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" /></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /> <path d="m9 12 2 2 4-4" /></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol><symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></symbol></svg>
+<header class="top" id="top">
+  <div class="w">
+    <a class="logo" href="#"><span class="m"><svg class="i"><use href="#i-dog"/></svg></span>주인장 <small>by 글램독</small></a>
+    <span class="sp"></span>
+    <nav class="nl" aria-label="바로 가기"><a href="#live">지금 되는 것</a><a href="#next">다음 단계</a><a href="#biz">가능성</a><a href="#road">앞으로</a></nav>
+    <button class="btn sec sm" onclick="share()" aria-label="이 페이지 공유하기"><svg class="i"><use href="#i-send"/></svg>공유</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="w">
+    <div>
+      <span class="pill"><i></i>개발 중 · 일부 기능은 데모로 보여 드려요</span>
+      <p class="eyebrow">글램독이 6개 지점 96실을 운영하며 직접 만든 시스템</p>
+      <h1>예약은 한 화면에,<br><em>손님은 다시 우리에게.</em></h1>
+      <p class="lede">모든 채널 예약을 한 곳에 모으고, 다녀간 손님을 기억해 공식 예약창으로 다시 모십니다. 현장 추가요금까지 바로 결제받고, 정산은 알아서 맞춰집니다.</p>
+      <div class="ctas"><a class="btn pri" href="demo.html">운영 화면 둘러보기<svg class="i"><use href="#i-arrow-right"/></svg></a><a class="btn sec" href="book.html?c=GLAM-7K2Q&amp;g=%EA%B9%80%EC%84%9C%EC%97%B0">공식 예약창 체험</a></div>
+      <div class="sub-link"><a href="pay.html">추가요금 결제 체험<svg class="i"><use href="#i-chevron-right"/></svg></a><a href="#next">무엇이 달라지나<svg class="i"><use href="#i-chevron-right"/></svg></a></div>
+    </div>
+    <div class="vis" aria-hidden="true">
+      <div class="phone"><div class="scr"><img src="shot-phone.png" alt=""></div></div>
+      <div class="float f1"><span class="fi" style="background:var(--info-soft);color:var(--info-ink)"><svg class="i"><use href="#i-users"/></svg></span><div><b>5번째 방문 · 단골</b><span>보리 생일 D-7 · 닭고기 알레르기</span></div></div>
+      <div class="float f3"><span class="fi" style="background:var(--brand-soft);color:var(--brand)"><svg class="i"><use href="#i-shield-check"/></svg></span><div><b>다른 채널 방 자동 마감</b><span>야놀자 예약 → 4개 채널 닫힘</span></div></div>
+      <div class="float f2"><span class="fi" style="background:var(--ok-soft);color:var(--ok-ink)"><svg class="i"><use href="#i-circle-check"/></svg></span><div><b>추가요금 50,000원 결제</b><span>현장기록·정산에 바로 반영</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="stats"><div class="w">
+  <div class="st"><b>6</b><span>개 지점 (직영·위탁)</span></div>
+  <div class="st"><b>96</b><span>실을 매일 이 시스템으로</span></div>
+  <div class="st"><b>5</b><span>개 예약 채널 연결</span></div>
+  <div class="st"><b>1</b><span>화면에 예약·현장·정산</span></div>
+</div></div>
+
+<section>
+  <div class="w">
+    <p class="kick">왜 만들었나</p>
+    <h2>숙소 운영은 생각보다 조각나 있습니다</h2>
+    <div class="probs">
+      <div class="card prob"><span class="n">문제 1</span><b>예약은 다섯 군데서 따로</b><p>채널마다 따로 들어오는 예약. 놓치거나 겹치면(오버부킹) 바로 손해입니다.</p></div>
+      <div class="card prob"><span class="n">문제 2</span><b>현장은 단톡·엑셀·메모</b><p>지점마다 방식이 달라 인수인계가 끊기고, 같은 실수가 반복됩니다.</p></div>
+      <div class="card prob"><span class="n">문제 3</span><b>다녀간 손님은 다시 OTA로</b><p>좋았던 단골도 다음 예약 때 또 채널 수수료를 내고 들어옵니다.</p></div>
+    </div>
+    <div class="answer"><svg class="i"><use href="#i-sparkles"/></svg>그래서 현장에서 직접 만들었고, 매일 씁니다.</div>
+  </div>
+</section>
+
+<section id="live" style="padding-top:20px">
+  <div class="w">
+    <p class="kick">지금 되는 것 <span class="tag live">운영 중</span></p>
+    <h2>6개 지점이 이미 이 화면으로 일합니다</h2>
+    <div class="live-grid">
+      <div class="feat">
+        <div class="card ft"><span class="fi"><svg class="i"><use href="#i-list-checks"/></svg></span><div><b>예약을 한 화면에</b><p>야놀자·여기어때·반려생활·아고다·에어비앤비 예약이 체크인 리스트 하나로 모입니다. 문자 실시간 수집과 10분 점검으로 빠진 예약도 다시 잡습니다.</p></div></div>
+        <div class="card ft"><span class="fi"><svg class="i"><use href="#i-shield-check"/></svg></span><div><b>자동 방막기</b><p>한 채널에서 팔리면 다른 채널의 같은 방을 시스템이 닫습니다. 오버부킹을 사람 손 대신 막습니다.</p></div></div>
+        <div class="card ft"><span class="fi"><svg class="i"><use href="#i-spray-can"/></svg></span><div><b>현장 운영을 폰 하나로</b><p>입실 체크, 청소 배정, 바베큐, 근무표, 인수인계까지. 직원은 폰으로, 본사는 PC로 같은 화면을 봅니다.</p></div></div>
+        <div class="card ft"><span class="fi"><svg class="i"><use href="#i-chart-line"/></svg></span><div><b>돈과 성장까지</b><p>판매대행 정산, 요금 관리(AI 가격 제안), 리뷰 분석과 자동 답글, 주간 마케팅 브리프.</p></div></div>
+      </div>
+      <div>
+        <div class="browser"><div class="bh"><i></i><i></i><i></i></div><img src="shot-pc.png" alt="체크인 리스트 PC 화면 (가상 데이터)" loading="lazy"></div>
+        <p class="shotcap">2026년 10월 새로 바꾼 체크인 화면 · 화면 속 이름과 번호는 가상입니다</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="next" id="next">
+  <div class="w">
+    <p class="kick">다음 단계 <span class="tag dev">개발 중 · 데모 공개</span></p>
+    <h2>손님을 채널의 것이 아니라<br>우리의 것으로</h2>
+    <p class="sd">새 손님은 채널이 데려옵니다. 하지만 두 번째 방문부터는 우리가 직접 모십니다. 손님 기록(CRM), 공식 예약창, 결제(PG)를 하나로 묶습니다.</p>
+    <div class="loop">
+      <div class="step"><span class="no">1</span><b>첫 예약은 채널에서</b><p>야놀자·여기어때 등에서 새 손님이 옵니다.</p><span class="ar"><svg class="i"><use href="#i-arrow-right"/></svg></span></div>
+      <div class="step"><span class="no">2</span><b>손님을 기억</b><p>방문·강아지 이름·생일·취향·리뷰가 손님 카드에 쌓입니다.</p><span class="ar"><svg class="i"><use href="#i-arrow-right"/></svg></span></div>
+      <div class="step hi"><span class="no">3</span><b>다음엔 공식 예약창</b><p>단골 쿠폰이 걸린 링크를 알림톡으로. 강아지 정보는 이미 채워져 있습니다.</p><span class="ar"><svg class="i"><use href="#i-arrow-right"/></svg></span></div>
+      <div class="step hi"><span class="no">4</span><b>결제는 바로</b><p>예약 결제부터 현장 추가요금(링크·QR)까지 PG로 받습니다.</p><span class="ar"><svg class="i"><use href="#i-arrow-right"/></svg></span></div>
+      <div class="step"><span class="no">5</span><b>정산은 자동</b><p>결제가 현장기록·매출·정산에 그대로 들어갑니다.</p></div>
+    </div>
+    <p class="back"><svg class="i"><use href="#i-refresh-cw"/></svg>다시 2번으로. 올 때마다 손님 카드가 두꺼워집니다.</p>
+    <div class="money">
+      <div class="card mo bad"><small>같은 13.2만 원 예약 · 채널로 받으면</small><b>약 19,800원</b><p>채널 수수료 15% 가정</p></div>
+      <div class="card mo ok"><small>공식 예약창으로 받으면</small><b>약 3,960원</b><p>카드 결제 수수료 3% 가정</p></div>
+      <div class="card mo sum"><small>예약 한 건마다 남는 돈</small><b>약 1.6만 원</b><p>단골이 많아질수록 커집니다 · 수수료율은 가정치</p></div>
+    </div>
+    <div class="tri">
+      <div class="card tc"><span class="fi" style="background:var(--info-soft);color:var(--info-ink)"><svg class="i"><use href="#i-users"/></svg></span><b>손님 관리 (CRM)</b><ul><li><svg class="i"><use href="#i-check"/></svg>체크인 화면에 '5번째 방문·생일·지난번 불만'</li><li><svg class="i"><use href="#i-check"/></svg>단골·오래 안 온 손님 묶음</li><li><svg class="i"><use href="#i-check"/></svg>동의한 손님에게만 알림톡</li></ul><a class="btn sec sm" href="demo.html?v=home">데모 보기<svg class="i"><use href="#i-arrow-right"/></svg></a></div>
+      <div class="card tc"><span class="fi" style="background:var(--brand-soft);color:var(--brand)"><svg class="i"><use href="#i-calendar-check"/></svg></span><b>공식 예약창</b><ul><li><svg class="i"><use href="#i-check"/></svg>체크인 리스트와 같은 실시간 남은 방</li><li><svg class="i"><use href="#i-check"/></svg>채널보다 낮은 공식가 + 단골 쿠폰</li><li><svg class="i"><use href="#i-check"/></svg>예약되면 다른 채널 방 자동 마감</li></ul><a class="btn sec sm" href="book.html?c=GLAM-7K2Q&amp;g=%EA%B9%80%EC%84%9C%EC%97%B0">예약해 보기<svg class="i"><use href="#i-arrow-right"/></svg></a></div>
+      <div class="card tc"><span class="fi" style="background:var(--ok-soft);color:var(--ok-ink)"><svg class="i"><use href="#i-hand-coins"/></svg></span><b>결제 (PG)</b><ul><li><svg class="i"><use href="#i-check"/></svg>카드·카카오페이·네이버페이·토스페이</li><li><svg class="i"><use href="#i-check"/></svg>현장 추가요금도 링크·QR로 바로</li><li><svg class="i"><use href="#i-check"/></svg>현장기록·정산 자동 반영</li></ul><a class="btn sec sm" href="pay.html">결제해 보기<svg class="i"><use href="#i-arrow-right"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <p class="kick">왜 다른가</p>
+    <h2>책상이 아니라 현장에서 나온 시스템</h2>
+    <div class="why">
+      <div class="card wy"><span class="fi"><svg class="i"><use href="#i-building-2"/></svg></span><div><b>매일 쓰면서 고칩니다</b><p>6개 지점 실제 운영에서 나온 불편을 바로 고칩니다. 기능이 아니라 일하는 순서에서 출발합니다.</p></div></div>
+      <div class="card wy"><span class="fi"><svg class="i"><use href="#i-dog"/></svg></span><div><b>반려견 숙소에서 시작, 어디든 확장</b><p>강아지 정보까지 챙기는 섬세함으로 시작해, 호스텔·호텔·캠핑으로 넓힐 수 있게 설계했습니다.</p></div></div>
+      <div class="card wy"><span class="fi"><svg class="i"><use href="#i-zap"/></svg></span><div><b>사람 손을 덜어 주는 자동화</b><p>예약 수집, 방막기, 리뷰 답글, 가격 제안을 시스템이 먼저 합니다. 사람은 확인과 손님 응대에 집중합니다.</p></div></div>
+      <div class="card wy"><span class="fi"><svg class="i"><use href="#i-trending-up"/></svg></span><div><b>쓸수록 쌓이는 손님 자산</b><p>재방문과 직접예약이 늘수록 수수료는 줄고, 손님 데이터는 회사의 자산이 됩니다.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="biz" style="padding-top:20px">
+  <div class="w">
+    <p class="kick">가능성</p>
+    <h2>우리 숙소에서 검증하고,<br>다른 숙소에 공급합니다</h2>
+    <p class="sd">같은 시스템을 세 가지 방식으로 제공합니다. 숙소 주인은 맡기고 싶은 만큼만 맡기면 됩니다.</p>
+    <div class="plans">
+      <div class="card pl"><span class="who">도구만 쓰세요</span><b>주인장 OS</b><span class="pr">월 9.9만 원~</span><p>예약 통합, 채널 연동과 자동 방막기, 청소 배정. 운영은 직접, 시스템은 주인장.</p></div>
+      <div class="card pl mid"><span class="who">현장만 챙기세요</span><b>주인장 세일즈</b><span class="pr">채널 수수료 실비 + 3%</span><p>판매·가격·채널 관리를 맡깁니다. AI 가격 조정 포함.</p></div>
+      <div class="card pl"><span class="who">확인만 하세요</span><b>주인장 매니지드</b><span class="pr">총매출의 10%</span><p>판매부터 현장 운영·정산까지 위탁. 월간 손익 보고.</p></div>
+    </div>
+    <p class="note">11~20실 기준 · VAT 별도 · 2026년 10월 요금</p>
+    <div class="card expand"><b>넓혀 갈 업종</b><div class="chips"><span class="chip on"><svg class="i"><use href="#i-dog"/></svg>반려견 펜션</span><span class="chip"><svg class="i"><use href="#i-bed-double"/></svg>호스텔 (준비 중)</span><span class="chip"><svg class="i"><use href="#i-building-2"/></svg>호텔</span><span class="chip"><svg class="i"><use href="#i-tent"/></svg>캠핑</span></div></div>
+  </div>
+</section>
+
+<section id="road" style="padding-top:20px">
+  <div class="w">
+    <p class="kick">앞으로 <span class="tag plan">계획 · 바뀔 수 있어요</span></p>
+    <h2>다음 1년</h2>
+    <div class="road">
+      <div class="card rd now"><span class="when">2026년 4분기 · 지금</span><b>기반 다지기</b><ul><li>새 화면 배포 완료 (10월)</li><li>CRM 데모 공개</li><li>호스텔 세팅</li></ul></div>
+      <div class="card rd"><span class="when">2027년 1분기</span><b>손님 기억하기</b><ul><li>CRM 1단계: 손님 카드·목록</li><li>공식 예약창 시범</li></ul></div>
+      <div class="card rd"><span class="when">2027년 2분기</span><b>직접 받기</b><ul><li>PG 결제: 예약·현장 추가요금</li><li>알림톡 자동 메시지</li></ul></div>
+      <div class="card rd"><span class="when">2027년 하반기</span><b>넓히기</b><ul><li>다른 숙소 공급 확대</li><li>업종 확장</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<div class="final">
+  <div class="w">
+    <h2>직접 눌러 보세요</h2>
+    <p class="sd">운영 화면, 공식 예약창, 추가요금 결제를 데모로 열어 두었습니다. 화면 속 이름과 숫자는 모두 가상입니다.</p>
+    <div class="ctas"><a class="btn pri" href="demo.html">운영 화면 둘러보기</a><a class="btn sec" href="book.html?c=GLAM-7K2Q&amp;g=%EA%B9%80%EC%84%9C%EC%97%B0">공식 예약창 체험</a><a class="btn sec" href="pay.html">추가요금 결제 체험</a><button class="btn sec" onclick="share()"><svg class="i"><use href="#i-send"/></svg>공유하기</button></div>
+  </div>
+</div>
+<footer><div class="w"><span>(주)인장매니지먼트 · 글램독</span><a href="https://www.juinjang.co.kr" target="_blank" rel="noopener">juinjang.co.kr</a><span>데모 화면의 이름·숫자·수수료율은 가상 또는 가정입니다.</span></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const topEl = document.getElementById('top');
+addEventListener('scroll', () => topEl.classList.toggle('sc', scrollY > 8), {passive: true});
+let tt;
+function toast(t) { const el = document.getElementById('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('on'), 2200); }
+async function share() {
+  const data = {title: '주인장 · 숙소 운영 시스템', text: '글램독이 직접 만든 숙소 운영 시스템 소개', url: location.href.split('#')[0]};
+  if (navigator.share) { try { await navigator.share(data); } catch (e) {} return; }
+  try { await navigator.clipboard.writeText(data.url); toast('주소를 복사했어요'); } catch (e) { prompt('이 주소를 복사하세요', data.url); }
+}
+</script>
+</body>
+</html>
