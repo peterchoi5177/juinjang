@@ -175,18 +175,6 @@ h2{font-size:36px;line-height:1.25;font-weight:850;letter-spacing:-.04em;margin-
 .chip.on{background:var(--brand);color:#fff}
 .chip svg{width:16px;height:16px}
 
-/* 로드맵 */
-.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:30px}
-.rd{padding:22px 20px;position:relative}
-.rd .when{font-size:13.5px;font-weight:800;color:var(--ink-3)}
-.rd b{display:block;font-size:18px;font-weight:850;margin:4px 0 10px;letter-spacing:-.03em}
-.rd ul{list-style:none;display:grid;gap:6px;font-size:14.5px;color:var(--ink-2)}
-.rd li{padding-left:14px;position:relative}
-.rd li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--brand)}
-.rd.now{background:var(--brand);color:#fff;border-color:var(--brand)}
-.rd.now .when{color:rgb(255 255 255/.75)}
-.rd.now ul{color:rgb(255 255 255/.88)}
-.rd.now li::before{background:#fff}
 
 /* 마지막 */
 .final{background:var(--deep);color:#fff;text-align:center;padding:72px 0}
@@ -208,7 +196,6 @@ footer a{font-weight:700;color:var(--ink-2)}
   .loop{grid-template-columns:minmax(0,1fr)}
   .step .ar{right:auto;left:22px;top:auto;bottom:-15px;transform:rotate(90deg)}
   .money,.tri,.plans{grid-template-columns:minmax(0,1fr)}
-  .road{grid-template-columns:repeat(2,minmax(0,1fr))}
   .nl{display:none}
 }
 @media (max-width:640px){
@@ -221,7 +208,7 @@ footer a{font-weight:700;color:var(--ink-2)}
   section{padding:52px 0}
   .stats .w{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
   .st b{font-size:28px}
-  .probs,.why,.road{grid-template-columns:minmax(0,1fr)}
+  .probs,.why{grid-template-columns:minmax(0,1fr)}
   .vis{height:500px}
   .phone{width:240px}
   .phone .scr{height:470px}
@@ -244,7 +231,7 @@ footer a{font-weight:700;color:var(--ink-2)}
   <div class="w">
     <a class="logo" href="#"><span class="m"><svg class="i"><use href="#i-dog"/></svg></span>주인장 <small>by 글램독</small></a>
     <span class="sp"></span>
-    <nav class="nl" aria-label="바로 가기"><a href="#live">지금 되는 것</a><a href="#next">다음 단계</a><a href="#biz">가능성</a><a href="#road">앞으로</a></nav>
+    <nav class="nl" aria-label="바로 가기"><a href="#live">지금 되는 것</a><a href="#next">다음 단계</a><a href="#biz">가능성</a></nav>
     <button class="btn sec sm" onclick="share()" aria-label="이 페이지 공유하기"><svg class="i"><use href="#i-send"/></svg>공유</button>
   </div>
 </header>
@@ -361,18 +348,6 @@ footer a{font-weight:700;color:var(--ink-2)}
   </div>
 </section>
 
-<section id="road" style="padding-top:20px">
-  <div class="w">
-    <p class="kick">앞으로 <span class="tag plan">계획 · 바뀔 수 있어요</span></p>
-    <h2>다음 1년</h2>
-    <div class="road">
-      <div class="card rd now"><span class="when">2026년 4분기 · 지금</span><b>기반 다지기</b><ul><li>새 화면 배포 완료 (10월)</li><li>CRM 데모 공개</li><li>호스텔 세팅</li></ul></div>
-      <div class="card rd"><span class="when">2027년 1분기</span><b>손님 기억하기</b><ul><li>CRM 1단계: 손님 카드·목록</li><li>공식 예약창 시범</li></ul></div>
-      <div class="card rd"><span class="when">2027년 2분기</span><b>직접 받기</b><ul><li>PG 결제: 예약·현장 추가요금</li><li>알림톡 자동 메시지</li></ul></div>
-      <div class="card rd"><span class="when">2027년 하반기</span><b>넓히기</b><ul><li>다른 숙소 공급 확대</li><li>업종 확장</li></ul></div>
-    </div>
-  </div>
-</section>
 
 <div class="final">
   <div class="w">
